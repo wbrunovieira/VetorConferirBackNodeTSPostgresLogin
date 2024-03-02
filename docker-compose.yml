@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  app:
+    container_name: vetor-node-login-container
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://user:password@db:5432/dbname
+
+  db:
+    container_name: vetor-postgres-login-container
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: dbname
+
+volumes:
+  postgres_data:
